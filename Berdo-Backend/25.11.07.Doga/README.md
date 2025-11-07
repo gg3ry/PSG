@@ -1,0 +1,2 @@
+## .env needed
+### Berdó geci
