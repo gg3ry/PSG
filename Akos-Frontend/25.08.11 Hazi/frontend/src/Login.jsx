@@ -3,10 +3,12 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 function Login({ setIsLoggedIn, isLoggedIn }) {
     const [error, setError] = useState("");
     const [info , setInfo] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -20,8 +22,13 @@ function Login({ setIsLoggedIn, isLoggedIn }) {
                 if (res.ok) {
                         setIsLoggedIn(true);
                         console.log(isLoggedIn);
-                        window.location.href = '/profile';
-                } else {
+                        setAddress(data.address || "");
+                        setPhoneNumber(data.phone_number || "");
+                        setUsername(data.username || "");
+                        setEmail(data.email || "");
+                        navigate("/profile");
+                    }
+                    else {
                     setError(data.message || 'Failed to log in');
                 }
             } catch (error) {

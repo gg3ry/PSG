@@ -84,10 +84,8 @@ app.get('/logUser', async (req, res) => {
   }
   else {
     try {
-        const rows = await pool.query('SELECT * FROM users WHERE (email = "?" OR username = "?" OR phone_number = "?") AND password = "?"', [info, info, info, password]);
-        console.log(rows);
+        const [rows] = await pool.query('SELECT * FROM users WHERE (email = ? OR username = ? OR phone_number = ?) AND password = ?', [info, info, info, password]);
         if (rows.length == 0) {
-          
           console.log('No user found with provided credentials');  
           conn.release();
           return res.status(401).json({ message: 'Invalid credentials' });
@@ -95,7 +93,7 @@ app.get('/logUser', async (req, res) => {
         else {
           console.log('User logged in successfully:', rows[0]);
             conn.release();
-            return res.status(200).json({ message: 'Login successful', user: rows[0] });
+            return res.status(200).json( rows[0] );
         }
     } catch (error) {
         conn.release();
